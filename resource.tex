@@ -1,0 +1,95 @@
+controller:
+
+% import { Controller, Get, Query } from '@nestjs/common';
+% import { PhraseService } from './phrase.service';
+% import { ApiTags, ApiQuery, ApiResponse } from '@nestjs/swagger';
+
+% @ApiTags('phrases')
+% @Controller('api/phrase')
+% export class PhraseController {
+%   constructor(private readonly phraseService: PhraseService) {}
+
+%   @Get()
+%   @ApiQuery({ name: 'search', required: false })
+%   @ApiQuery({ name: 'page', required: false, type: Number })
+%   @ApiQuery({ name: 'limit', required: false, type: Number })
+%   @ApiQuery({ name: 'sortField', required: false })
+%   @ApiQuery({ name: 'sortOrder', required: false, enum: ['ASC', 'DESC'] })
+%   @ApiResponse({
+%     status: 200,
+%     description: 'Search results',
+%     schema: {
+%       type: 'object',
+%       properties: {
+%         data: { type: 'array', items: { type: 'object' } },
+%         total: { type: 'number' },
+%         page: { type: 'number' },
+%         lastPage: { type: 'number' },
+%       },
+%     },
+%   })
+%   async findAll(
+%     @Query('search') search: string,
+%     @Query('page') page: number,
+%     @Query('limit') limit: number,
+%     @Query('sortField') sortField: string,
+%     @Query('sortOrder') sortOrder: 'ASC' | 'DESC',
+%   ) {
+%     return this.phraseService.findAll(
+%       search,
+%       page,
+%       limit,
+%       sortField,
+%       sortOrder,
+%     );
+%   }
+% }
+
+services:
+
+% import { Injectable } from '@nestjs/common';
+% import { InjectRepository } from '@nestjs/typeorm';
+% import { ILike, Repository } from 'typeorm';
+% import { Phrase } from './phrase.entity';
+
+% @Injectable()
+% export class PhraseService {
+%   constructor(
+%     @InjectRepository(Phrase)
+%     private phraseRepository: Repository<Phrase>,
+%   ) {}
+
+%   async findAll(
+%     search: string,
+%     page: number = 1,
+%     limit: number = 10,
+%     sortField: string = 'id',
+%     sortOrder: 'ASC' | 'DESC' = 'ASC',
+%   ) {
+%     const [result, total] = await this.phraseRepository.findAndCount({
+%       where: { text: ILike(`%${search}%`) },
+%       order: { [sortField]: sortOrder },
+%       take: limit,
+%       skip: (page - 1) * limit,
+%     });
+
+%     return {
+%       data: result,
+%       total,
+%       page,
+%       lastPage: Math.ceil(total / limit),
+%     };
+%   }
+% }
+
+
+empoints search:
+
+% GET /api/phrase?search=test
+% GET /api/phrase?search=test&page=2&limit=10
+
+
+
+
+
+
