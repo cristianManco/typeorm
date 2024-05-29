@@ -1,12 +1,11 @@
 export default () => ({
+  port: process.env.PORT || 4000,
   database: {
-    type: process.env.DATABASE_TYPE || 'postgres',
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT, 10) || 5432,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    db: process.env.DB_NAME,
-    autoLoadEntities: true,
-    synchronize: true,
+    type:'postgres',
+    host: process.env.DATABASE_HOST || 'localhost',
+    port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
+    username: process.env.DATABASE_USERNAME || 'postgres',
+    password: process.env.DATABASE_PASSWORD || 'password',
+    database: process.env.DATABASE_DB || 'test',
   },
 });

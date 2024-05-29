@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { PhraseService } from './phrase.service';
 import { ApiTags, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { PhraseService } from '../serv/phrase.service';
 
 @ApiTags('phrases')
 @Controller('api/phrase')
