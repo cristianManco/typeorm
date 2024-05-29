@@ -1,24 +1,23 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import config from './config/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PhraseModule } from './phrase/phrase.module';
-import config from './config/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-      load: [config],
-    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
+      host: config().database.host,
+      port: config().database.port,
+      username: config().database.username,
+      password: config().database.password,
+      database: config().database.db,
+      autoLoadEntities: true,
+      synchronize: true
     }),
     PhraseModule,
   ],
-  controllers: [],
+  controllers:[],
   providers:[],
 })
 export class AppModule {}

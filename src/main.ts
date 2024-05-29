@@ -14,5 +14,7 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(3000);
+  console.log('Application is listening on port 3000/n');
+  console.log('Swagger is available at http://localhost:3000/api-docs');
 }
 bootstrap();
